@@ -18,11 +18,11 @@ export default function App() {
     <View style={styles.container}>
       <Text>Health tracker!</Text>
 
-      <View style={{ flexDirection: "row" }}>
+      <View style={styles.values}>
         <Value label="Steps" value="1200" />
         <Value label="Distance" value="0,75km" />
+        <Value label="Flights climbed" value="35" />
       </View>
-      <Value label="Flights climbed" value="35" />
 
       <StatusBar style="auto" />
     </View>
@@ -36,17 +36,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 12,
   },
+  values: {
+    flexDirection: "row",
+    gap: 25,
+    flexWrap: "wrap",
+  },
+  valueContainer: {
+    // marginVertical: 10,
+    // minWidth: "40%",
+  },
   label: {
     color: "#AFB3BE",
     fontSize: 20,
   },
   value: {
-    fontSize: 35,
+    fontSize: 45,
     color: "#AFB3BE",
     fontWeight: "500",
-  },
-  valueContainer: {
-    marginRight: 50,
-    marginVertical: 10,
   },
 });
