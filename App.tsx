@@ -10,7 +10,7 @@ import Value from "./src/components/value";
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Health tracker!</Text>
+      <RingProgress progress={0.3} />
 
       <View style={styles.values}>
         <Value label="Steps" value="1200" />
@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 25,
     flexWrap: "wrap",
+    marginTop: 100,
   },
   // valueContainer: {
   //   marginVertical: 10,
