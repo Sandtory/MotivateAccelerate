@@ -1,5 +1,6 @@
 import { View, Text, ImageBackground } from "react-native";
 import React, { useEffect } from "react";
+import { AntDesign } from "@expo/vector-icons";
 import Svg, { Circle, CircleProps } from "react-native-svg";
 import Animated, {
   useAnimatedProps,
@@ -63,6 +64,16 @@ const RingProgress = ({
         {/* foreground */}
         <AnimatedCircle animatedProps={animatedProps} {...circleDefaultProps} />
       </Svg>
+      <AntDesign
+        name="arrowright"
+        size={strokeWidth * 0.8}
+        color="black"
+        style={{
+          position: "absolute",
+          alignSelf: "center",
+          top: strokeWidth * 0.1,
+        }}
+      />
     </View>
   );
 };

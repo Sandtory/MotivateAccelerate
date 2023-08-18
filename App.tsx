@@ -6,7 +6,7 @@ import Value from "./src/components/value";
 export default function App() {
   return (
     <View style={styles.container}>
-      <RingProgress progress={0.1} />
+      <RingProgress radius={150} strokeWidth={50} progress={0.1} />
 
       <View style={styles.values}>
         <Value label="Steps" value="1200" />
