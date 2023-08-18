@@ -3,14 +3,10 @@ import { StyleSheet, Text, View } from "react-native";
 import RingProgress from "./src/components/RingProgress";
 import Value from "./src/components/value";
 
-{
-  /* <RingProgress progress={(0.8)} />; */
-}
-
 export default function App() {
   return (
     <View style={styles.container}>
-      <RingProgress progress={0.3} />
+      <RingProgress progress={0.1} />
 
       <View style={styles.values}>
         <Value label="Steps" value="1200" />
