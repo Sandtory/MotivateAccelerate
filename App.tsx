@@ -8,6 +8,7 @@ import AppleHealthKit, {
   HealthUnit,
 } from "react-native-health";
 import { useEffect, useState } from "react";
+import useHealthData from "./src/components/hooks/useHealthData";
 
 const permissions: HealthKitPermissions = {
   permissions: {
@@ -21,60 +22,7 @@ const permissions: HealthKitPermissions = {
 };
 const STEPS_GOAL = 10_000;
 export default function App() {
-  const [hasPermissions, setHasPermission] = useState(false);
-  const [steps, setSteps] = useState(0);
-  const [flights, setFlights] = useState(0);
-  const [distance, setDistance] = useState(0);
-
-  useEffect(() => {
-    AppleHealthKit.initHealthKit(permissions, (err) => {
-      if (err) {
-        console.log("error getting permissions");
-        return;
-      }
-      setHasPermission(true);
-      // you can request data
-    });
-  }, []);
-
-  useEffect(() => {
-    if (!hasPermissions) {
-      return;
-    }
-
-    const options: HealthInputOptions = {
-      date: new Date(2023, 5, 18).toISOString(),
-      includeManuallyAdded: false,
-    };
-
-    AppleHealthKit.getStepCount(options, (err, results) => {
-      if (err) {
-        console.log("Error getting steps");
-        return;
-      }
-      console.log(results);
-      setSteps(results.value);
-    });
-
-    AppleHealthKit.getFlightsClimbed(options, (err, results) => {
-      if (err) {
-        console.log("Error getting flights");
-        return;
-      }
-      console.log(results);
-      setFlights(results.value);
-    });
-
-    AppleHealthKit.getDistanceWalkingRunning(options, (err, results) => {
-      if (err) {
-        console.log("Error getting distance");
-        return;
-      }
-      console.log(results);
-      setDistance(results.value);
-    });
-  }, []);
-
+  const { steps, flights, distance } = useHealthData(new Date(2023, 5, 15));
   return (
     <View style={styles.container}>
       <RingProgress
