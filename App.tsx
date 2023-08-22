@@ -1,30 +1,45 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import RingProgress from "./src/components/RingProgress";
 import Value from "./src/components/value";
-import AppleHealthKit, {
-  HealthInputOptions,
-  HealthKitPermissions,
-  HealthUnit,
-} from "react-native-health";
-import { useEffect, useState } from "react";
+import RingProgress from "./src/components/RingProgress";
+import { useState } from "react";
 import useHealthData from "./src/components/hooks/useHealthData";
+import { AntDesign } from "@expo/vector-icons";
+import React from "react";
 
-const permissions: HealthKitPermissions = {
-  permissions: {
-    read: [
-      AppleHealthKit.Constants.Permissions.Steps,
-      AppleHealthKit.Constants.Permissions.FlightsClimbed,
-      AppleHealthKit.Constants.Permissions.DistanceWalkingRunning,
-    ],
-    write: [],
-  },
-};
 const STEPS_GOAL = 10_000;
+
 export default function App() {
-  const { steps, flights, distance } = useHealthData(new Date(2023, 5, 15));
+  const [date, setDate] = useState(new Date());
+  const { steps, flights, distance } = useHealthData(date);
+
+  const changeDate = (numDays) => {
+    const currentDate = new Date(date); // Create a copy of the current date
+    // Update the date by adding/subtracting the number of days
+    currentDate.setDate(currentDate.getDate() + numDays);
+
+    setDate(currentDate); // Update the state variable
+  };
+
   return (
     <View style={styles.container}>
+      <View style={styles.datePicker}>
+        <AntDesign
+          onPress={() => changeDate(-1)}
+          name="left"
+          size={20}
+          color="#C3FF53"
+        />
+        <Text style={styles.date}>{date.toDateString()}</Text>
+
+        <AntDesign
+          onPress={() => changeDate(1)}
+          name="right"
+          size={20}
+          color="#C3FF53"
+        />
+      </View>
+
       <RingProgress
         radius={150}
         strokeWidth={50}
@@ -33,8 +48,8 @@ export default function App() {
 
       <View style={styles.values}>
         <Value label="Steps" value={steps.toString()} />
-        <Value label="Distance" value={`${(distance / 1000).toFixed(2)}km`} />
-        <Value label="Flights climbed" value={flights.toString()} />
+        <Value label="Distance" value={`${(distance / 1000).toFixed(2)} km`} />
+        <Value label="Flights Climbed" value={flights.toString()} />
       </View>
 
       <StatusBar style="auto" />
@@ -55,8 +70,16 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     marginTop: 100,
   },
-  // valueContainer: {
-  //   marginVertical: 10,
-  //   minWidth: "40%",
-  // },
+  datePicker: {
+    alignItems: "center",
+    padding: 20,
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  date: {
+    color: "white",
+    fontWeight: "500",
+    fontSize: 20,
+    marginHorizontal: 20,
+  },
 });

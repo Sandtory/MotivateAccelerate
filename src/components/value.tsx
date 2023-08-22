@@ -1,3 +1,4 @@
+import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 type ValueProps = {
@@ -5,7 +6,7 @@ type ValueProps = {
   value: string;
 };
 
-const Value = ({ label, value }) => (
+const Value = ({ label, value }: ValueProps) => (
   <View>
     <Text style={styles.label}>{label}</Text>
     <Text style={styles.value}>{value}</Text>
@@ -14,7 +15,7 @@ const Value = ({ label, value }) => (
 
 const styles = StyleSheet.create({
   label: {
-    color: "#AFB3BE",
+    color: "white",
     fontSize: 20,
   },
   value: {

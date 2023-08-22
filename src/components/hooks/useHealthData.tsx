@@ -1,13 +1,9 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import RingProgress from "./src/components/RingProgress";
-import Value from "./src/components/value";
+import { useEffect, useState } from "react";
+import { Platform } from "react-native";
 import AppleHealthKit, {
   HealthInputOptions,
   HealthKitPermissions,
-  HealthUnit,
 } from "react-native-health";
-import { useEffect, useState } from "react";
 
 const permissions: HealthKitPermissions = {
   permissions: {
@@ -19,20 +15,35 @@ const permissions: HealthKitPermissions = {
     write: [],
   },
 };
+
 const useHealthData = (date: Date) => {
   const [hasPermissions, setHasPermission] = useState(false);
   const [steps, setSteps] = useState(0);
   const [flights, setFlights] = useState(0);
   const [distance, setDistance] = useState(0);
 
+  // iOS - HealthKit
   useEffect(() => {
-    AppleHealthKit.initHealthKit(permissions, (err) => {
+    if (Platform.OS !== "ios") {
+      return;
+    }
+
+    AppleHealthKit.isAvailable((err, isAvailable) => {
       if (err) {
-        console.log("error getting permissions");
+        console.log("Error checking availability");
         return;
       }
-      setHasPermission(true);
-      // you can request data
+      if (!isAvailable) {
+        console.log("Apple Health not available");
+        return;
+      }
+      AppleHealthKit.initHealthKit(permissions, (err) => {
+        if (err) {
+          console.log("Error getting permissions");
+          return;
+        }
+        setHasPermission(true);
+      });
     });
   }, []);
 
@@ -48,31 +59,28 @@ const useHealthData = (date: Date) => {
 
     AppleHealthKit.getStepCount(options, (err, results) => {
       if (err) {
-        console.log("Error getting steps");
+        console.log("Error getting the steps");
         return;
       }
-      console.log(results);
       setSteps(results.value);
     });
 
     AppleHealthKit.getFlightsClimbed(options, (err, results) => {
       if (err) {
-        console.log("Error getting flights");
+        console.log("Error getting the steps:", err);
         return;
       }
-      console.log(results);
       setFlights(results.value);
     });
 
     AppleHealthKit.getDistanceWalkingRunning(options, (err, results) => {
       if (err) {
-        console.log("Error getting distance");
+        console.log("Error getting the steps:", err);
         return;
       }
-      console.log(results);
       setDistance(results.value);
     });
-  }, [hasPermissions]);
+  }, [hasPermissions, date]);
   return {
     steps,
     flights,
