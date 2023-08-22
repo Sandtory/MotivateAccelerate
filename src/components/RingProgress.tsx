@@ -62,7 +62,20 @@ const RingProgress = ({
         {/* Background*/}
         <Circle {...circleDefaultProps} opacity={0.2} />
         {/* foreground */}
-        <AnimatedCircle animatedProps={animatedProps} {...circleDefaultProps} />
+        <AnimatedCircle
+          animatedProps={animatedProps}
+          r={innerRadius}
+          cx={radius}
+          cy={radius}
+          fill="transparent"
+          stroke={color}
+          strokeWidth={strokeWidth}
+          strokeDasharray={[circumference * progress, circumference]}
+          strokeLinecap="round"
+          rotation="-90"
+          originX={radius}
+          originY={radius}
+        />
       </Svg>
       <AntDesign
         name="arrowright"
